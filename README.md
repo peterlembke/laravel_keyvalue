@@ -18,6 +18,11 @@ dox composer require peterlembke/laravel_keyvalue
 - Laravel version: 7.15.0
 - Date: 2020-06-28
 
+---
+
+Below is not done. See the code instead. Each folder has its own README.md
+
+
 ## Details
 This is a small generic package to Laravel 7.x that you can call from your module.
 This package create tables with prefix `charzam_keyvalue_`.
