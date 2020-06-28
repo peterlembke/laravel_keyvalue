@@ -17,15 +17,15 @@
  * along with KeyValueServiceProvider.php.	If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace Charzam\KeyValue;
+namespace PeterLembke\KeyValue;
 
-use Charzam\KeyValue\Console\Commands\Read;
-use Charzam\KeyValue\Console\Commands\Write;
+use PeterLembke\KeyValue\Console\Commands\Read;
+use PeterLembke\KeyValue\Console\Commands\Write;
 use Illuminate\Support\ServiceProvider;
 
 /**
  * Class KeyValueServiceProvider
- * @package Charzam\KeyValue
+ * @package PeterLembke\KeyValue
  * This is the main file in your package
  * This file are found by Laravel because it is registered in your package composer.json
  * In this file you register everything you want to work in your package
@@ -43,19 +43,19 @@ class KeyValueServiceProvider extends ServiceProvider
     {
         // Other packages can bind your interface and override your class
         $this->app->bind(
-            'Charzam\Keyvalue\Repositories\KeyValueRepositoryInterface',
-            'Charzam\Keyvalue\Repositories\KeyValueRepository'
+            'PeterLembke\KeyValue\Repositories\KeyValueRepositoryInterface',
+            'PeterLembke\KeyValue\Repositories\KeyValueRepository'
         );
 
         // First mention the interface THEN the class
         $this->app->bind(
-            'Charzam\Keyvalue\MyLogic\MyLogicInterface',
-            'Charzam\Keyvalue\MyLogic\MyLogic'
+            'PeterLembke\KeyValue\MyLogic\MyLogicInterface',
+            'PeterLembke\KeyValue\MyLogic\MyLogic'
         );
 
         // Have these last. If they have a constructor that use one of the above classes then they must first be bound.
-        $this->app->make('Charzam\KeyValue\Controllers\TestController');
-        $this->app->make('Charzam\KeyValue\Controllers\AnotherController');
+        $this->app->make('PeterLembke\KeyValue\Controllers\TestController');
+        $this->app->make('PeterLembke\KeyValue\Controllers\AnotherController');
     }
 
     /**

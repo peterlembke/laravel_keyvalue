@@ -17,13 +17,14 @@
  * along with Test.php.	If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace Charzam\KeyValue\Console\Commands;
+namespace PeterLembke\KeyValue\Console\Commands;
 
 use Illuminate\Console\Command;
+use PeterLembke\KeyValue\MyLogic\MyLogicInterface;
 
 /**
  * Class Write
- * @package Charzam\KeyValue\Console\Commands
+ * @package PeterLembke\KeyValue\Console\Commands
  * Write data to the key value table
  * Example: dox laravel keyvalue:write foobar my_data
  */
@@ -43,14 +44,19 @@ class Write extends Command
      */
     protected $description = 'Write data to a key';
 
+    protected $myLogicTest;
+
     /**
-     * Create a new command instance.
-     *
-     * @return void
+     * Write constructor.
+     * @param MyLogicInterface $test
      */
-    public function __construct()
+    public function __construct(
+        MyLogicInterface $test
+    )
     {
-        parent::__construct();
+        $this->myLogicTest = $test;
+
+        parent::__construct(); // Classes that extend another class should call the parent constructor.
     }
 
     /**
@@ -58,7 +64,11 @@ class Write extends Command
      */
     public function handle(): void
     {
-        echo 'Key: ' . $this->argument('key') . "\n";
-        echo 'Value: ' . $this->argument('value') . "\n";
+        $key = $this->argument('key');
+        echo 'Key: ' . $key . "\n";
+
+        $value = $this->argument('value');
+        $this->myLogicTest->setTitle($value);
+        echo 'Value: ' . $value . "\n";
     }
 }

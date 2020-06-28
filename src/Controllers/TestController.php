@@ -17,14 +17,14 @@
  * along with TestController.php.	If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace Charzam\KeyValue\Controllers;
+namespace PeterLembke\KeyValue\Controllers;
 
 use App\Http\Controllers\Controller;
-use Charzam\KeyValue\MyLogic\MyLogicInterface;
+use PeterLembke\KeyValue\MyLogic\MyLogicInterface;
 
 /**
  * Class TestController
- * @package Charzam\KeyValue\Controllers
+ * @package PeterLembke\KeyValue\Controllers
  * The controller does very little. It can view a view, return a value from a repository, run logic classes.
  * If you have if statements and loops in here then be careful.
  * You should not have extra functions in a controller that is logic and should be in a logic class.

@@ -19,11 +19,11 @@
 
 declare(strict_types=1);
 
-namespace Charzam\KeyValue\MyLogic;
+namespace PeterLembke\KeyValue\MyLogic;
 
 /**
  * Interface KeyValueRepositoryInterface
- * @package Charzam\KeyValue\Repositories
+ * @package PeterLembke\KeyValue\Repositories
  * Read and write to a key-value storage
  * This is the interface that others will use in their dependency injections.
  * Laravel will check what class to use by the bind to this interface.

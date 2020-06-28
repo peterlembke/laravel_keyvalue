@@ -9,7 +9,7 @@ In your repository you can use [Eloquent ORM](https://laravel.com/docs/7.x/eloqu
 
 ## Usage
 A repository is just a normal class with an interface.
-The logic classes are the same thing.
+The logic classes are built in the same way.
 
 You can use a repository from another package in a so called dependency injection. Then you reference the interface class in your constructor and you will get the class that are bound to the interface.
 

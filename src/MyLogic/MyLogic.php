@@ -19,18 +19,23 @@
 
 declare(strict_types=1);
 
-namespace Charzam\KeyValue\MyLogic;
+namespace PeterLembke\KeyValue\MyLogic;
 
-use Charzam\KeyValue\Repositories\KeyValueRepositoryInterface;
+use PeterLembke\KeyValue\Repositories\KeyValueRepositoryInterface;
 
 /**
  * Class KeyValueRepository
- * @package Charzam\KeyValue\MyLogic
+ * @package PeterLembke\KeyValue\MyLogic
  * Show how you can add standard logic classes to your package
  * These classes are not repositories, not controllers - you just put your logic in these
+ * Benefit is that you can test these classes. They can be overridden.
+ * They can be used by other packages trough the interface.
  */
 class MyLogic implements MyLogicInterface
 {
+    const RESOURCE_NAME = 'config';
+    const TITLE_KEY = 'my_title';
+
     protected $keyValueRepository;
 
     /**
@@ -60,8 +65,9 @@ class MyLogic implements MyLogicInterface
      */
     public function getTitle(): string
     {
-        $valueArray = $this->keyValueRepository->read('config', 'my_title');
-        return $valueArray['title'];
+        $valueArray = $this->keyValueRepository->read(self::RESOURCE_NAME, self::TITLE_KEY);
+        $title = $valueArray['data']['title'];
+        return $title;
     }
 
     /**
@@ -74,7 +80,7 @@ class MyLogic implements MyLogicInterface
             'title' => $title
         ];
 
-        $this->keyValueRepository->write('config', 'my_title', $valueArray);
+        $response = $this->keyValueRepository->write(self::RESOURCE_NAME, self::TITLE_KEY, $valueArray);
     }
 
 }

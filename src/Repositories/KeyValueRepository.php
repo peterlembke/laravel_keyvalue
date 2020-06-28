@@ -19,11 +19,11 @@
 
 declare(strict_types=1);
 
-namespace Charzam\KeyValue\Repositories;
+namespace PeterLembke\KeyValue\Repositories;
 
 /**
  * Class KeyValueRepository
- * @package Charzam\KeyValue\Repositories
+ * @package PeterLembke\KeyValue\Repositories
  * Handles the database tables
  * This is an implementation if the KeyValueRepositoryInterface
  * and it is bound to the interface in BackendServiceProvider.php
@@ -43,7 +43,7 @@ class KeyValueRepository implements KeyValueRepositoryInterface
             'answer'=> true,
             'message' => 'Here are the data',
             'data' => [
-                'my' => 'data'
+                'title' => 'My title'
             ]
         ];
     }

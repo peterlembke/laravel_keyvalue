@@ -1,5 +1,5 @@
 {
-    "name": "charzam/keyvalue",
+    "name": "peterlembke/laravel_keyvalue",
     "description": "Generic key-value resources manager",
     "license": "GPL3",
     "authors": [
@@ -14,13 +14,13 @@
     },
     "autoload": {
         "psr-4": {
-            "Charzam\\KeyValue\\": "src/"
+            "PeterLembke\\KeyValue\\": "src/"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "Charzam\\KeyValue\\KeyValueServiceProvider"
+                "PeterLembke\\KeyValue\\KeyValueServiceProvider"
             ]
         }
     }

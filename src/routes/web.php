@@ -13,20 +13,20 @@
 
 // http://aktivbo-api.aktivbo.dev.local/charzam/keyvalue
 $route = 'charzam/keyvalue';
-$destination = 'charzam\keyvalue\Controllers\TestController@index';
+$destination = 'PeterLembke\KeyValue\Controllers\TestController@index';
 Route::get($route, $destination);
 
 // http://aktivbo-api.aktivbo.dev.local/charzam/keyvalue/read/mykey
 $route = 'charzam/keyvalue/read/{key?}';
-$destination = 'charzam\keyvalue\Controllers\TestController@read';
+$destination = 'PeterLembke\KeyValue\Controllers\TestController@read';
 Route::get($route, $destination);
 
 // http://aktivbo-api.aktivbo.dev.local/charzam/keyvalue/write/mykey/mydata
 $route = 'charzam/keyvalue/write/{key?}/{value?}';
-$destination = 'charzam\keyvalue\Controllers\TestController@write';
+$destination = 'PeterLembke\KeyValue\Controllers\TestController@write';
 Route::get($route, $destination);
 
 // http://aktivbo-api.aktivbo.dev.local/foobar
 $route = 'foobar';
-$destination = 'charzam\keyvalue\Controllers\AnotherController@index';
+$destination = 'PeterLembke\KeyValue\Controllers\AnotherController@index';
 Route::get($route, $destination);

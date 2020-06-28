@@ -17,7 +17,7 @@
  * along with AnotherController.php.	If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace Charzam\KeyValue\Controllers;
+namespace PeterLembke\KeyValue\Controllers;
 
 use App\Http\Controllers\Controller;
 

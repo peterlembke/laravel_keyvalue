@@ -17,13 +17,14 @@
  * along with Test.php.	If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace Charzam\KeyValue\Console\Commands;
+namespace PeterLembke\KeyValue\Console\Commands;
 
 use Illuminate\Console\Command;
+use PeterLembke\KeyValue\MyLogic\MyLogicInterface;
 
 /**
  * Class Read
- * @package Charzam\KeyValue\Console\Commands
+ * @package PeterLembke\KeyValue\Console\Commands
  * Read from the key value table
  * Example: dox laravel keyvalue:read foobar
  */
@@ -43,14 +44,19 @@ class Read extends Command
      */
     protected $description = 'Read a key';
 
+    protected $myLogicTest;
+
     /**
-     * Create a new command instance.
-     *
-     * @return void
+     * Read constructor.
+     * @param MyLogicInterface $test
      */
-    public function __construct()
+    public function __construct(
+        MyLogicInterface $test
+    )
     {
-        parent::__construct();
+        $this->myLogicTest = $test;
+
+        parent::__construct(); // Classes that extend another class should call the parent constructor.
     }
 
     /**
@@ -59,5 +65,6 @@ class Read extends Command
     public function handle(): void
     {
         echo 'Key: ' . $this->argument('key') . "\n";
+        echo 'Title: ' . $this->myLogicTest->getTitle() . "\n";
     }
 }
