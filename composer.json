@@ -1,0 +1,27 @@
+{
+    "name": "charzam/keyvalue",
+    "description": "Generic key-value resources manager",
+    "license": "GPL3",
+    "authors": [
+        {
+            "name": "Peter Lembke",
+            "email": "peter@charzam.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "illuminate/support": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Charzam\\KeyValue\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Charzam\\KeyValue\\KeyValueServiceProvider"
+            ]
+        }
+    }
+}
