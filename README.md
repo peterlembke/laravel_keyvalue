@@ -2,8 +2,17 @@
 Handles key-value data for moderate amount of data.
 If your application need a key-value resource then call this package.
 
+This is an example package that aim to show all basic features in Laravel.
+
+## Install
+
+Install from the github repo
+```
+dox composer require peterlembke/laravel_keyvalue
+```
+
 ## Quick info
-- Name: Charzam/Keyvalue
+- Name: peterlembke/laravel_keyvalue
 - Status: Generic (Custom or Generic)
 - Note: Handles key-value for moderate amount of data
 - Laravel version: 7.15.0

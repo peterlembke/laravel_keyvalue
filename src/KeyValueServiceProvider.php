@@ -74,6 +74,8 @@ class KeyValueServiceProvider extends ServiceProvider
             ]);
         }
 
+        $this->loadMigrationsFrom(__DIR__.'/Database/Migrations');
+
         // $this->loadViewsFrom(__DIR__.'/views', 'timezones');
 
         /*
