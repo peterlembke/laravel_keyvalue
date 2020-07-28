@@ -55,10 +55,6 @@ class Base
      */
     public function _Default(array $default = array(), array $in = array()): array
     {
-        if (is_null($this->firstDefault) === true) {
-            $this->firstDefault = $default;
-        }
-
         if (is_array($default) === false and is_array($in) === true) {
             return $in;
         }

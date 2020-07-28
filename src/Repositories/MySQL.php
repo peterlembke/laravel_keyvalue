@@ -72,7 +72,7 @@ class MySQL implements MySQLInterface
 
         $tableName = $setupResponse['table_name'];
 
-        $readResponse = $this->internal_Read($tabelName, $key);
+        $readResponse = $this->internal_Read($tableName, $key);
 
         $defaultResponse = [
             'answer' => false,
@@ -306,7 +306,7 @@ class MySQL implements MySQLInterface
      */
     protected function internal_TableExist(string $tableName = ''): bool
     {
-        $result = DB::select('SHOW TABLES LIKE ?', [$tableName]);
+        $result = DB::select('SHOW TABLES LIKE "?"', [$tableName]);
 
         if (count($result) > 0) {
             return true;
@@ -323,11 +323,13 @@ class MySQL implements MySQLInterface
     protected function internal_CreateTableIfNotExist(string $tableName = ''): bool
     {
         $sql = <<<'EOD'
-CREATE TABLE IF NOT EXISTS $tableName (
+CREATE TABLE IF NOT EXISTS {table_name} (
     `key` varchar(127) COLLATE utf8_unicode_ci NOT NULL PRIMARY KEY COMMENT 'The unique key',
     `value` mediumtext COLLATE utf8_unicode_ci NOT NULL COMMENT 'Your json textdata up to 16Mb'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Charzam_KeyValue module';
 EOD;
+
+        $sql = str_replace('{table_name}', $tableName, $sql);
 
         $result = DB::statement($sql);
         return $result;
@@ -353,7 +355,7 @@ EOD;
      */
     protected function internal_Read(string $tableName = '', string $key = ''): array
     {
-        $result = DB::select("select * from $tableName where key = ?", [$key]);
+        $result = DB::select("select * from $tableName where `key` = \"?\"", [$key]);
 
         $postExist = false;
         if (count($result) > 0) {
@@ -380,7 +382,7 @@ EOD;
      */
     protected function internal_Insert(string $tableName = '', string $key = '', string $value = ''): bool
     {
-        $result = DB::insert("insert into $tableName (key, value) values (?, ?)", [$key, $value]);
+        $result = DB::insert("insert into $tableName (key, value) values ('?', '?')", [$key, $value]);
         return $result;
     }
 
@@ -393,7 +395,7 @@ EOD;
      */
     protected function internal_Update(string $tableName = '', string $key = '', string $value = ''): int
     {
-        $affectedId = DB::update("update $tableName set value = ? where key = ?", [$value, $key]);
+        $affectedId = DB::update("update $tableName set value = '?' where key = '?'", [$value, $key]);
         return $affectedId;
     }
 }
