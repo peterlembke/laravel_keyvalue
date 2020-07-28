@@ -35,16 +35,27 @@ interface KeyValueRepositoryInterface
      * @param string $resourceName | To get the right table name: charzam_keyvalue_{resourceName}
      * @param string $key | what/ever_you/like
      * @return array | You get answer, message, data, post_exist in an array
+     * @param array $default | An array with properties and datatypes you expect in the response
+     * @return array
      */
-    public function read(string $resourceName = '', string $key = ''): array;
-
+    public function read(
+        string $resourceName = '', 
+        string $key = '', 
+        array $default = []
+    ): array;
+    
     /**
      * Write to a key value resource
      * @param string $resourceName
      * @param string $key
      * @param array $value | The array data you want to write
-     * @return array | You get answer, message in an array
+     * @param string $mode | overwrite, merge, drop (leave key empty to drop the table)
+     * @return array | You get answer, message, new_post in an array
      */
-    public function write(string $resourceName = '', string $key = '', array $value = []): array;
-
+    public function write(
+        string $resourceName = '',
+        string $key = '', array
+        $value = [], string
+        $mode = 'overwrite'
+    ): array;
 }

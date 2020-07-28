@@ -20,7 +20,8 @@
 namespace PeterLembke\KeyValue\Console\Commands;
 
 use Illuminate\Console\Command;
-use PeterLembke\KeyValue\MyLogic\MyLogicInterface;
+use PeterLembke\KeyValue\Repositories\KeyValueRepositoryInterface;
+use PeterLembke\KeyValue\Helper\Base;
 
 /**
  * Class Write
@@ -35,7 +36,7 @@ class Write extends Command
      *
      * @var string
      */
-    protected $signature = 'keyvalue:write {key} {value}';
+    protected $signature = 'keyvalue:write {resource_name} {key} {value}';
 
     /**
      * The console command description.
@@ -44,17 +45,23 @@ class Write extends Command
      */
     protected $description = 'Write data to a key';
 
-    protected $myLogicTest;
+    /** @var KeyValueRepositoryInterface  */
+    protected $keyValueRepository;
+
+    /** @var Base  */
+    protected $base;
 
     /**
-     * Write constructor.
-     * @param MyLogicInterface $test
+     * Read constructor.
+     * @param KeyValueRepositoryInterface $keyValueRepository
      */
     public function __construct(
-        MyLogicInterface $test
+        KeyValueRepositoryInterface $keyValueRepository,
+        Base $base
     )
     {
-        $this->myLogicTest = $test;
+        $this->keyValueRepository = $keyValueRepository;
+        $this->base = $base;
 
         parent::__construct(); // Classes that extend another class should call the parent constructor.
     }
@@ -64,11 +71,19 @@ class Write extends Command
      */
     public function handle(): void
     {
+        $resourceName = $this->argument('resource_name');
         $key = $this->argument('key');
-        echo 'Key: ' . $key . "\n";
-
         $value = $this->argument('value');
-        $this->myLogicTest->setTitle($value);
-        echo 'Value: ' . $value . "\n";
+
+        $mode = 'overwrite';
+
+        $response = $this->keyValueRepository->write($resourceName, $key, $value, $mode);
+
+        if ($response['answer'] === false) {
+            echo $response['message'];
+            return;
+        }
+
+        echo $this->base->_JsonEncode($response);
     }
 }

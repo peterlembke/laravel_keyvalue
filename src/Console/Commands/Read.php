@@ -20,13 +20,14 @@
 namespace PeterLembke\KeyValue\Console\Commands;
 
 use Illuminate\Console\Command;
-use PeterLembke\KeyValue\MyLogic\MyLogicInterface;
+use PeterLembke\KeyValue\Repositories\KeyValueRepositoryInterface;
+use PeterLembke\KeyValue\Helper\Base;
 
 /**
  * Class Read
  * @package PeterLembke\KeyValue\Console\Commands
  * Read from the key value table
- * Example: dox laravel keyvalue:read foobar
+ * Example: dox laravel keyvalue:read config background/color
  */
 class Read extends Command
 {
@@ -35,7 +36,7 @@ class Read extends Command
      *
      * @var string
      */
-    protected $signature = 'keyvalue:read {key}';
+    protected $signature = 'keyvalue:read {resource_name} {key}';
 
     /**
      * The console command description.
@@ -44,17 +45,23 @@ class Read extends Command
      */
     protected $description = 'Read a key';
 
-    protected $myLogicTest;
+    /** @var KeyValueRepositoryInterface  */
+    protected $keyValueRepository;
+
+    /** @var Base  */
+    protected $base;
 
     /**
      * Read constructor.
-     * @param MyLogicInterface $test
+     * @param KeyValueRepositoryInterface $keyValueRepository
      */
     public function __construct(
-        MyLogicInterface $test
+        KeyValueRepositoryInterface $keyValueRepository,
+        Base $base
     )
     {
-        $this->myLogicTest = $test;
+        $this->keyValueRepository = $keyValueRepository;
+        $this->base = $base;
 
         parent::__construct(); // Classes that extend another class should call the parent constructor.
     }
@@ -64,7 +71,15 @@ class Read extends Command
      */
     public function handle(): void
     {
-        echo 'Key: ' . $this->argument('key') . "\n";
-        echo 'Title: ' . $this->myLogicTest->getTitle() . "\n";
+        $resourceName = $this->argument('resource_name');
+        $key = $this->argument('key');
+
+        $response = $this->keyValueRepository->read($resourceName, $key);
+        if ($response['answer'] === false) {
+            echo $response['message'];
+            return;
+        }
+
+        echo $this->base->_JsonEncode($response['data']);
     }
 }

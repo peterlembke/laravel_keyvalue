@@ -21,46 +21,84 @@ declare(strict_types=1);
 
 namespace PeterLembke\KeyValue\Repositories;
 
+use PeterLembke\KeyValue\Repositories\MySQL;
+use PeterLembke\KeyValue\Helper\Base;
+
 /**
  * Class KeyValueRepository
  * @package PeterLembke\KeyValue\Repositories
- * Handles the database tables
+ * Handles the database tables that store key value data.
  * This is an implementation if the KeyValueRepositoryInterface
  * and it is bound to the interface in BackendServiceProvider.php
+ * I use SQL in here because I need to handle many tables.
  */
 class KeyValueRepository implements KeyValueRepositoryInterface
 {
-    /**
-     * @param string $resourceName
-     * @param string $key
-     * @return array
-     */
-    public function read(string $resourceName = '', string $key = ''): array
-    {
-        // TODO: Implement read() method.
+    /** @var \PeterLembke\KeyValue\Repositories\MySQL */
+    protected $mysql;
 
-        return [
-            'answer'=> true,
-            'message' => 'Here are the data',
-            'data' => [
-                'title' => 'My title'
-            ]
-        ];
+    /** @var Base */
+    protected $base;
+
+    public function __construct(
+        MySQL $mySQL,
+        Base $base
+    )
+    {
+        $this->mysql = $mySQL;
+        $this->base = $base;
     }
 
     /**
+     * Read from a key value resource
+     * @param string $resourceName
+     * @param string $key
+     * @return array
+     */
+    public function read(
+        string $resourceName = '',
+        string $key = '',
+        array $default = []
+    ): array
+    {
+        $readResponse = $this->mysql->read($resourceName, $key, $default);
+
+        $responseDefault = [
+            'answer' => false,
+            'message' => '',
+            'key' => '',
+            'value' => [],
+            'post_exist' => false
+        ];
+        $readResponse = $this->base->_Default($responseDefault, $readResponse);
+
+        return $readResponse;
+    }
+
+    /**
+     * Write to a key value resource
      * @param string $resourceName
      * @param string $key
      * @param array $value
+     * @param string $mode | overwrite, merge, drop (leave key empty to drop the table)
      * @return array
      */
-    public function write(string $resourceName = '', string $key = '', array $value = []): array
+    public function write(
+        string $resourceName = '',
+        string $key = '', array
+        $value = [], string
+        $mode = 'overwrite'
+    ): array
     {
-        // TODO: Implement write() method.
+        $writeResponse = $this->mysql->write($resourceName, $key, $value, $mode);
 
-        return [
-            'answer'=> true,
-            'message' => 'Data stored'
+        $responseDefault = [
+            'answer' => false,
+            'message' => '',
+            'new_post' => false
         ];
+        $writeResponse = $this->base->_Default($responseDefault, $writeResponse);
+
+        return $writeResponse;
     }
 }
