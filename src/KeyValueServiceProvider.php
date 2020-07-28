@@ -47,10 +47,15 @@ class KeyValueServiceProvider extends ServiceProvider
             'PeterLembke\KeyValue\Repositories\KeyValueRepository'
         );
 
+        $this->app->bind(
+            'PeterLembke\KeyValue\Repositories\MySQLInterface',
+            'PeterLembke\KeyValue\Repositories\MySQL'
+        );
+
         // First mention the interface THEN the class
         $this->app->bind(
-            'PeterLembke\KeyValue\MyLogic\MyLogicInterface',
-            'PeterLembke\KeyValue\MyLogic\MyLogic'
+            'PeterLembke\KeyValue\Logic\KeyValueInterface',
+            'PeterLembke\KeyValue\Logic\KeyValue'
         );
 
         // Have these last. If they have a constructor that use one of the above classes then they must first be bound.

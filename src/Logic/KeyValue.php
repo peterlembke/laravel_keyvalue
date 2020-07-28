@@ -19,23 +19,24 @@
 
 declare(strict_types=1);
 
-namespace PeterLembke\KeyValue\MyLogic;
+namespace PeterLembke\KeyValue\Logic;
 
 use PeterLembke\KeyValue\Repositories\KeyValueRepositoryInterface;
 
 /**
- * Class KeyValueRepository
- * @package PeterLembke\KeyValue\MyLogic
+ * Class KeyValue
+ * @package PeterLembke\KeyValue\Logic
  * Show how you can add standard logic classes to your package
  * These classes are not repositories, not controllers - you just put your logic in these
  * Benefit is that you can test these classes. They can be overridden.
  * They can be used by other packages trough the interface.
  */
-class MyLogic implements MyLogicInterface
+class KeyValue implements KeyValueInterface
 {
     const RESOURCE_NAME = 'config';
     const TITLE_KEY = 'my_title';
 
+    /** @var KeyValueRepositoryInterface  */
     protected $keyValueRepository;
 
     /**

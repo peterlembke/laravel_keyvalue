@@ -19,33 +19,42 @@
 
 declare(strict_types=1);
 
-namespace PeterLembke\KeyValue\MyLogic;
+namespace PeterLembke\KeyValue\Repositories;
 
 /**
- * Interface KeyValueRepositoryInterface
+ * Interface MySQLInterface
  * @package PeterLembke\KeyValue\Repositories
  * Read and write to a key-value storage
  * This is the interface that others will use in their dependency injections.
  * Laravel will check what class to use by the bind to this interface.
  */
-interface MyLogicInterface
+interface MySQLInterface
 {
     /**
-     * Get time in different formats
-     * @param string $format
-     * @return string
+     * Read from a key value resource
+     * @param string $resourceName
+     * @param string $key
+     * @param array $default | Associated array with properties and datatypes you want in the data
+     * @return array
      */
-    public function getTime(string $format = ''): string;
+    public function read(
+        string $resourceName = '',
+        string $key = '',
+        array $default = []
+    ): array;
 
     /**
-     * Get the stored title
-     * @return string
+     * Write to a key value resource
+     * @param string $resourceName
+     * @param string $key
+     * @param array $value
+     * @param string $mode |overwrite, merge, drop (key must be empty)
+     * @return array
      */
-    public function getTitle(): string;
-
-    /**
-     * Set a title
-     * @param string $title
-     */
-    public function setTitle(string $title = ''): void;
+    public function write(
+        string $resourceName = '',
+        string $key = '',
+        array $value = [],
+        string $mode = 'overwrite'
+    ): array;
 }

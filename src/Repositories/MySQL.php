@@ -33,6 +33,9 @@ class MySQL implements MySQLInterface
 {
     const TABLE_PREFIX = 'charzam_keyvalue_';
 
+    const MAX_RESOURCE_NAME_LENGTH = 24;
+
+    /** @var Base  */
     protected $base;
 
     public function __construct(
@@ -239,7 +242,7 @@ class MySQL implements MySQLInterface
      */
     protected function getTableName(string $resourceName = ''): string
     {
-        $resourceNameValid = $this->containOnlyLetters($resourceName);
+        $resourceNameValid = $this->containOnlyLowerCaseLetters($resourceName);
         if ($resourceNameValid === false) {
             return '';
         }
@@ -250,12 +253,49 @@ class MySQL implements MySQLInterface
     }
 
     /**
-     * Return true if the $row only contain letters a-z
+     * Return true if the $row only contain lower case letters a-z
      * @param string $row
-     * @return bool^
+     * @return bool
      */
-    protected function containOnlyLetters(string $row = ''): bool {
-        $result = preg_match("#^[a-z]+$#", $row);
+    protected function containOnlyLowerCaseLetters(string $row = ''): bool
+    {
+        $length = strlen($row);
+        if ($length > self::MAX_RESOURCE_NAME_LENGTH) {
+            return false; // we need to limit the table name length
+        }
+
+        $result = $this->containOnlyLowerCaseLettersInCurrentLocale($row);
+        if ($result === false) {
+            return false;
+        }
+
+        $minAscii = ord('a');
+        $maxAscii = ord('z');
+
+        for ($position = 0; $position < $length; $position = $position +1)
+        {
+            $ascii = ord($row[$position]);
+
+            if ($ascii < $minAscii) {
+                return false;
+            }
+
+            if ($ascii > $maxAscii) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * @see https://www.php.net/manual/en/function.ctype-lower.php
+     * @param string $row
+     * @return bool
+     */
+    protected function containOnlyLowerCaseLettersInCurrentLocale(string $row = ''): bool
+    {
+        $result = ctype_lower($row);
         return $result;
     }
 
@@ -313,7 +353,22 @@ EOD;
      */
     protected function internal_Read(string $tableName = '', string $key = ''): array
     {
+        $result = DB::select("select * from $tableName where key = ?", [$key]);
 
+        $postExist = false;
+        if (count($result) > 0) {
+            $postExist = true;
+        }
+
+        $value = $result[0]['value'];
+
+        return [
+            'answer' => $postExist,
+            'message' => 'Here are the result of the read',
+            'post_exist' => $postExist,
+            'key' => $key,
+            'value' => $value
+        ];
     }
 
     /**

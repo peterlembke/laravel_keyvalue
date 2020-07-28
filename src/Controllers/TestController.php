@@ -20,7 +20,7 @@
 namespace PeterLembke\KeyValue\Controllers;
 
 use App\Http\Controllers\Controller;
-use PeterLembke\KeyValue\MyLogic\MyLogicInterface;
+use PeterLembke\KeyValue\Logic\KeyValueInterface;
 
 /**
  * Class TestController
@@ -31,13 +31,13 @@ use PeterLembke\KeyValue\MyLogic\MyLogicInterface;
  */
 class TestController extends Controller
 {
-    protected $myLogicTest;
+    protected $keyValue;
 
     public function __construct(
-        MyLogicInterface $test
+        KeyValueInterface $keyValue
     )
     {
-        $this->myLogicTest = $test;
+        $this->keyValue = $keyValue;
     }
 
     /**
@@ -57,7 +57,7 @@ class TestController extends Controller
      */
     public function read(string $key = '')
     {
-        $title = $this->myLogicTest->getTitle();
+        $title = $this->keyValue->getTitle();
         $out = [
             'key' => $key,
             'title' => $title
@@ -78,7 +78,7 @@ class TestController extends Controller
      */
     public function write(string $key = '', string $value = '')
     {
-        $this->myLogicTest->setTitle($value);
+        $this->keyValue->setTitle($value);
 
         $out = [
             'key' => $key,
