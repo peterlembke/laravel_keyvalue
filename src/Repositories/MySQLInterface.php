@@ -47,14 +47,14 @@ interface MySQLInterface
      * Write to a key value resource
      * @param string $resourceName
      * @param string $key
-     * @param array $value
+     * @param array $valueArray
      * @param string $mode |overwrite, merge, drop (key must be empty)
      * @return array
      */
     public function write(
         string $resourceName = '',
         string $key = '',
-        array $value = [],
+        array $valueArray = [],
         string $mode = 'overwrite'
     ): array;
 }

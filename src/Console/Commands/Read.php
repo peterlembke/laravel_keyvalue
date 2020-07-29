@@ -80,6 +80,6 @@ class Read extends Command
             return;
         }
 
-        echo $this->base->_JsonEncode($response['data']);
+        echo $this->base->_JsonEncode($response['value_array']);
     }
 }

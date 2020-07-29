@@ -67,7 +67,7 @@ class KeyValueRepository implements KeyValueRepositoryInterface
             'answer' => false,
             'message' => '',
             'key' => '',
-            'value' => [],
+            'value_array' => [],
             'post_exist' => false
         ];
         $readResponse = $this->base->_Default($responseDefault, $readResponse);
@@ -86,11 +86,11 @@ class KeyValueRepository implements KeyValueRepositoryInterface
     public function write(
         string $resourceName = '',
         string $key = '', array
-        $value = [], string
+        $valueArray = [], string
         $mode = 'overwrite'
     ): array
     {
-        $writeResponse = $this->mysql->write($resourceName, $key, $value, $mode);
+        $writeResponse = $this->mysql->write($resourceName, $key, $valueArray, $mode);
 
         $responseDefault = [
             'answer' => false,

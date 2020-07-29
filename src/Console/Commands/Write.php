@@ -77,7 +77,11 @@ class Write extends Command
 
         $mode = 'overwrite';
 
-        $response = $this->keyValueRepository->write($resourceName, $key, $value, $mode);
+        $valueArray = [
+            'data' => $value
+        ];
+
+        $response = $this->keyValueRepository->write($resourceName, $key, $valueArray, $mode);
 
         if ($response['answer'] === false) {
             echo $response['message'];
