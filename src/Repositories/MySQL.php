@@ -35,6 +35,9 @@ class MySQL implements MySQLInterface
 
     const MAX_RESOURCE_NAME_LENGTH = 24;
 
+    /** @var array key=resourceName, value=table_name */
+    protected $setupResourceDone = [];
+
     /** @var Base  */
     protected $base;
 
@@ -139,6 +142,8 @@ class MySQL implements MySQLInterface
         {
             $response = $this->internal_DropTableIfExist($tableName);
 
+            unset($this->setupResourceDone[$resourceName]);
+
             return [
                 'answer' => $response['answer'],
                 'message' => $response['message'],
@@ -219,6 +224,15 @@ class MySQL implements MySQLInterface
      */
     protected function setupResource(string $resourceName = ''): array
     {
+        if (isset($this->setupResourceDone[$resourceName]) === true) {
+            return [
+                'answer' => true,
+                'message' => 'Resource already setup. Ready to read or write to the resourceName',
+                'table_name' => $this->setupResourceDone[$resourceName],
+                'table_exist' => true
+            ];
+        }
+
         $tableName = $this->getTableName($resourceName);
 
         if ($tableName === '') {
@@ -233,6 +247,7 @@ class MySQL implements MySQLInterface
         $tableExist = $this->internal_TableExist($tableName);
 
         if ($tableExist === true) {
+            $this->setupResourceDone[$resourceName] = $tableName;
             return [
                 'answer' => true,
                 'message' => 'Ready to read or write to the resourceName',
@@ -244,6 +259,7 @@ class MySQL implements MySQLInterface
         $tableCreated = $this->internal_CreateTableIfNotExist($tableName);
 
         if ($tableCreated === true) {
+            $this->setupResourceDone[$resourceName] = $tableName;
             return [
                 'answer' => true,
                 'message' => 'Table created. Ready to read or write to the resourceName',
@@ -279,6 +295,7 @@ class MySQL implements MySQLInterface
 
     /**
      * Return true if the $row only contain lower case letters a-z
+     * It is not enough to test only for the current locale.
      * @param string $row
      * @return bool
      */
@@ -314,6 +331,7 @@ class MySQL implements MySQLInterface
     }
 
     /**
+     * We test if the string contain lower case letters in the current locale.
      * @see https://www.php.net/manual/en/function.ctype-lower.php
      * @param string $row
      * @return bool
@@ -336,11 +354,12 @@ class MySQL implements MySQLInterface
 
         $result = DB::select($sql);
 
+        $exist = false;
         if (count($result) > 0) {
-            return true;
+            $exist = true;
         }
 
-        return false;
+        return $exist;
     }
 
     /**
@@ -360,6 +379,7 @@ EOD;
         $sql = str_replace('{table_name}', $tableName, $sql);
 
         $result = DB::statement($sql);
+
         return $result;
     }
 
@@ -372,6 +392,7 @@ EOD;
     protected function internal_DropTableIfExist(string $tableName = ''): bool
     {
         $result = DB::statement("drop table if exists $tableName");
+
         return $result;
     }
 

@@ -68,6 +68,7 @@ class Read extends Command
 
     /**
      * Execute the console command.
+     * dox laravel keyvalue:read config background/color
      */
     public function handle(): void
     {

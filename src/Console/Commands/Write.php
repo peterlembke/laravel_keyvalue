@@ -68,6 +68,7 @@ class Write extends Command
 
     /**
      * Execute the console command.
+     * dox laravel keyvalue:write config background/color A6A5A4AA
      */
     public function handle(): void
     {
